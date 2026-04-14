@@ -98,7 +98,7 @@ export default async function Home() {
   });
 
   // Map real posts into the grid format
-  const mappedDbPosts = dbPosts.map(post => ({
+  const mappedDbPosts = dbPosts.map((post: any) => ({
     id: post.slug,
     title: post.title,
     date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
@@ -182,7 +182,7 @@ export default async function Home() {
 
         {/* POSTS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mb-16 px-2">
-          {combinedGridPosts.map((post) => (
+          {combinedGridPosts.map((post: any) => (
             <div key={post.id} className="flex flex-col group cursor-pointer">
               <Link href={`/post/${post.id}`} className="relative aspect-[16/10] w-full overflow-hidden mb-4 rounded-xl shadow-sm block ring-1 ring-black/5">
                 <img 

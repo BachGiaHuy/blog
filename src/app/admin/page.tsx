@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
                   </td>
                 </tr>
               ) : (
-                posts.map(post => (
+                posts.map((post: any) => (
                   <tr key={post.id} className="hover:bg-blue-50/30 transition-colors group">
                     <td className="p-5">
                       <Link href={`/post/${post.slug}`} target="_blank" className="font-bold text-gray-900 group-hover:text-blue-600 line-clamp-1">

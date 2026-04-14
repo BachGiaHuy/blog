@@ -46,7 +46,7 @@ export default async function UsersPage() {
                   </td>
                 </tr>
               ) : (
-                users.map(user => (
+                users.map((user: any) => (
                   <tr key={user.id} className="hover:bg-blue-50/30 transition-colors">
                     <td className="p-5 font-bold text-gray-900">
                       {user.name || "Chưa cập nhật"}

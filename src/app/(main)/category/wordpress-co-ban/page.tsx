@@ -67,7 +67,7 @@ export default async function WordPressCoBanPage() {
   });
 
   // Map real posts into the grid format
-  const mappedDbPosts = dbPosts.map(post => ({
+  const mappedDbPosts = dbPosts.map((post: any) => ({
     id: post.slug,
     title: post.title,
     date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
