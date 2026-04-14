@@ -10,11 +10,18 @@ export default async function PostDetail({ params }: { params: Promise<{ slug: s
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
 
-  // Try to fetch from DB first
-  let post = await prisma.post.findUnique({
-    where: { slug },
-    include: { author: true }
-  });
+  // Try to fetch from DB first with error handling
+  let post = null;
+  
+  try {
+    post = await prisma.post.findUnique({
+      where: { slug },
+      include: { author: true }
+    });
+  } catch (error) {
+    console.error("Post Detail Data Fetch Error:", error);
+    // post remains null, will try mock fallback below
+  }
 
   // If not found in DB, we mock data to keep the UI from breaking for the hardcoded links
   if (!post) {

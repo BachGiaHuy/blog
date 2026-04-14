@@ -91,23 +91,30 @@ const NAV_CATEGORIES = [
 ];
 
 export default async function Home() {
-  // Fetch real posts from DB
-  const dbPosts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: 'desc' },
-    include: { author: true },
-    take: 10
-  });
+  // Fetch real posts from DB with error handling
+  let mappedDbPosts: any[] = [];
+  
+  try {
+    const dbPosts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+      include: { author: true },
+      take: 10
+    });
 
-  // Map real posts into the grid format
-  const mappedDbPosts = dbPosts.map((post: any) => ({
-    id: post.slug,
-    title: post.title,
-    date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
-    readTime: "5 phút đọc", // Fixed estimation for now
-    author: post.author.name || "WPLearn Author",
-    image: post.coverImage || "/images/images-blog/11.webp" // default fallback
-  }));
+    // Map real posts into the grid format
+    mappedDbPosts = dbPosts.map((post: any) => ({
+      id: post.slug,
+      title: post.title,
+      date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
+      readTime: "5 phút đọc", // Fixed estimation for now
+      author: post.author.name || "WPLearn Author",
+      image: post.coverImage || "/images/images-blog/11.webp" // default fallback
+    }));
+  } catch (error) {
+    console.error("Home Page Data Fetch Error:", error);
+    // mappedDbPosts remains empty, will backfill with mock data below
+  }
 
   // Create combined grid: DB posts first, then backfill with mock posts to always look full
   const combinedGridPosts = [...mappedDbPosts, ...MOCK_GRID_POSTS].slice(0, Math.max(9, mappedDbPosts.length));

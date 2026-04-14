@@ -58,25 +58,32 @@ const MOCK_BASIC_POSTS = [
 ];
 
 export default async function WordPressCoBanPage() {
-  // Fetch only posts categorized as "BASIC" (Cơ bản)
-  const dbPosts = await prisma.post.findMany({
-    where: { 
-      published: true,
-      level: "BASIC" 
-    },
-    orderBy: { createdAt: 'desc' },
-    include: { author: true },
-  });
+  // Fetch only posts categorized as "BASIC" (Cơ bản) with error handling
+  let mappedDbPosts: any[] = [];
 
-  // Map real posts into the grid format
-  const mappedDbPosts = dbPosts.map((post: any) => ({
-    id: post.slug,
-    title: post.title,
-    date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
-    readTime: "5 phút đọc",
-    author: post.author.name || "WPLearn Author",
-    image: post.coverImage || "/images/images-blog/11.webp"
-  }));
+  try {
+    const dbPosts = await prisma.post.findMany({
+      where: { 
+        published: true,
+        level: "BASIC" 
+      },
+      orderBy: { createdAt: 'desc' },
+      include: { author: true },
+    });
+
+    // Map real posts into the grid format
+    mappedDbPosts = dbPosts.map((post: any) => ({
+      id: post.slug,
+      title: post.title,
+      date: new Date(post.createdAt).toLocaleDateString("vi-VN", { day: 'numeric', month: 'short', year: 'numeric' }),
+      readTime: "5 phút đọc",
+      author: post.author.name || "WPLearn Author",
+      image: post.coverImage || "/images/images-blog/11.webp"
+    }));
+  } catch (error) {
+    console.error("Category Page Data Fetch Error:", error);
+    // mappedDbPosts remains empty, will backfill with mock data below
+  }
 
   // Create combined grid: DB posts first, then backfill
   const combinedGridPosts = [...mappedDbPosts, ...MOCK_BASIC_POSTS].slice(0, 9);
