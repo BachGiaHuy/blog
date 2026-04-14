@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function PostDetail({ params }: { params: Promise<{ slug: string }> }) {
   // Await the params Promise required in Next.js 15+
   const resolvedParams = await params;

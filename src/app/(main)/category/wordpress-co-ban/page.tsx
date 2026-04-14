@@ -3,6 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, BookOpen } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 // Mock Data using images from /images/images-blog/ completely for fallback
 const MOCK_BASIC_POSTS = [
   {

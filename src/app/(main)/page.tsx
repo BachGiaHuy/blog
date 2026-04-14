@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 // Mock Data using images from /images/images-blog/
 const MOCK_GRID_POSTS = [
   {
